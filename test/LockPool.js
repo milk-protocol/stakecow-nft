@@ -30,7 +30,7 @@ describe("LockPool", function() {
 		expect(balance).be.bignumber.to.equal("1");
 	});
 
-	it("lock token and mint cow", async() => {
+	it("lock token and mint", async() => {
 		let cow = await Cow.new({from: admin});
 		let token = await Token.new();
 		let lockPool = await LockPool.new(cow.address, token.address, {from: admin});
@@ -39,13 +39,15 @@ describe("LockPool", function() {
 		let amount = toBN(1000).mul(BASE);
 		await token.mint(user, amount);
 		await token.approve(lockPool.address, amount, {from: user});
+
 		
-		await lockPool.lock({from: user});
-
 		await expectRevert(
-			lockPool.lock({from: user}), "Locked"
-		);
+			lockPool.lock({from: user}), "Not start"
+		)
+		let startTime = await lockPool.startTime();
+		time.increaseTo(startTime.toNumber() + 1);
 
+		await lockPool.lock({from: user});
 		let balance = await token.balanceOf(user);
 		expect(balance.toString()).to.equal(toBN(970).mul(BASE).toString())
 

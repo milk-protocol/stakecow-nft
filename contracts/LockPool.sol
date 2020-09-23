@@ -46,6 +46,7 @@ contract LockPool is LPTokenWrapper, Ownable {
 	uint256 public lockPeriod;
 	uint256 public lockAmount;
 	uint256 public minted = 0;
+	uint256 public startTime = 1600855200; // 2020-09-23 10:00:00 UTC
 
 	event Locked(address indexed user, uint256 amount);
 	event Redeemed(address indexed user, uint256 amount);
@@ -57,7 +58,7 @@ contract LockPool is LPTokenWrapper, Ownable {
 		lockPeriod = 7 * 24 * 3600;
 	}
 
-	function updateLockParams(uint256 amount, uint256 period) public onlyOwner {
+	function updateParams(uint256 amount, uint256 period) public onlyOwner {
 		require(amount > 0, "Cannot lock 0");
 		lockAmount = amount;
 		lockPeriod = period;
@@ -77,6 +78,7 @@ contract LockPool is LPTokenWrapper, Ownable {
 	}
 
 	function lock() public updateLockParams {
+		require(block.timestamp >= startTime, "Not start");
 		require(locks[msg.sender] == 0, "Locked");
 		require(card.totalSupply() <= card.maxSupply(), "Exceeds max supply");
 		super._stake(lockAmount);

@@ -5,16 +5,16 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 /**
- * Cow Guardian NFT for https://stakecow.com
+ * NFT for https://stakecow.com
  */
-contract CowGuardian is ERC721, Ownable {
+contract StakeCow is ERC721, Ownable {
 	mapping (address => bool) public minters;
   uint256 public constant MAX_SUPPLY = 1000;
 
 	uint256 public currentTokenID = 0;
 	
-  constructor() public ERC721("StakeCow Guardian", "GUARD") {
-    _setBaseURI("https://nft.stakecow.com/guardian/");
+  constructor() public ERC721("StakeCow.com", "COW") {
+    _setBaseURI("https://nft.stakecow.com/cow/");
   }
 
   function maxSupply() public pure returns (uint256) {

@@ -5,7 +5,7 @@ const { BN, expectEvent, expectRevert, time, constants } = require('@openzeppeli
 
 const [ admin, deployer, user, minter ] = accounts;
 
-const Cow = contract.fromArtifact('CowGuardian');
+const Cow = contract.fromArtifact('StakeCow');
 const LockPool = contract.fromArtifact('LockPool');
 const Token = contract.fromArtifact('Token');
 

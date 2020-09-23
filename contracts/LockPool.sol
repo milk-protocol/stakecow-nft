@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-import "./CowGuardian.sol";
+import "./StakeCow.sol";
 
 
 contract LPTokenWrapper {
@@ -41,7 +41,7 @@ contract LPTokenWrapper {
 }
 
 contract LockPool is LPTokenWrapper, Ownable {
-	CowGuardian public card;
+	StakeCow public card;
 	mapping(address => uint256) public locks;
 	uint256 public lockPeriod;
 	uint256 public lockAmount;
@@ -53,13 +53,13 @@ contract LockPool is LPTokenWrapper, Ownable {
 
 
 	constructor(address card_, address token_) public LPTokenWrapper(token_){
-		card = CowGuardian(card_);
+		card = StakeCow(card_);
 		lockAmount = 30 * 1e18;
 		lockPeriod = 7 * 24 * 3600;
 	}
 
 	function updateParams(uint256 amount, uint256 period) public onlyOwner {
-		require(amount > 0, "Cannot lock 0");
+		require(amount > 0, "Cannot set 0");
 		lockAmount = amount;
 		lockPeriod = period;
 	}
